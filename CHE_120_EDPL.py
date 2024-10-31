@@ -26,6 +26,18 @@ BLUE=  (0  ,  0,255)
 
 
 introStart = None
+controlStart = None
+floor1Start = None
+floor2Start = None
+floor3Start = None
+floor4Start = None
+floor5Start = None
+floor6Start = None
+floor7Start = None
+floor8Start = None
+floor9Start = None
+floor10Start = None
+endCreditStart = None
 
 def intro ():
     fontObj=pygame.font.Font('STIXGeneralBol.ttf', 100)
@@ -49,34 +61,40 @@ def Movement ():
 def objectPickUp ():
     pass
     
-def Floor1():
+def floor1():
     pass
 
-def Floor2():
+def floor2():
     pass
 
-def Floor3():
+def floor3():
     pass
 
-def Floor4():
+def floor4():
     pass
 
-def Floor5():
+def floor5():
     pass
 
-def Floor6():
+def floor6():
     pass
 
-def Floor7():
+def floor7():
     pass
 
-def Floor8():
+def floor8():
     pass
 
-def Floor9():
+def floor9():
     pass
 
-def Floor10():
+def floor10():
+    pass
+
+def endAnimation ():
+    pass
+
+def endCredits ():
     pass
 
 while True:
@@ -85,6 +103,45 @@ while True:
     
     if introStart == None:
         introStart = intro()
+        controlStart=True
+        
+    elif controlStart == True:
+        floor1Start = control()
+        
+    elif floor1Start == True:
+        floor2Start = floor1()
+    
+    elif floor2Start == True:
+        floor3Start = floor2()
+        
+    elif floor3Start == True:
+        floor4Start = floor3()
+    
+    elif floor4Start == True:
+        floor5Start = floor4()
+    
+    elif floor5Start == True:
+        floor6Start = floor5()
+        
+    elif floor6Start == True:
+        floor7Start = floor6()
+        
+    elif floor7Start == True:
+        floor8Start = floor7()
+        
+    elif floor8Start == True:
+        floor9Start = floor8()
+        
+    elif floor9Start == True:
+        floor10Start = floor9()
+        
+    elif floor10Start == True:
+        endCreditStart = contro10()
+    
+    elif endCreditStart == True:
+        pass
+    
+        
         
     
     
