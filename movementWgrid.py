@@ -13,8 +13,21 @@ screen = pygame.display.set_mode((1200,800))
 clock = pygame.time.Clock()
 tile_size = 90
 player_pos = 1
-book_apperence = True
 moveSpeed = 10
+score = 0
+start_time = 0
+
+collected_books = []
+
+book_apperence1 = True
+book_apperence2 = False
+book_apperence3 = False
+book_apperence4 = False
+book_apperence5 = False
+book_apperence6 = False
+book_apperence7 = False
+
+game_done = False
 
 introStart = None
 controlStart = None
@@ -63,87 +76,100 @@ table = pygame.image.load("table.png").convert_alpha()
 #Random Book Generator
 blue_book = pygame.image.load('Blue Book.png')
 blue_book = pygame.transform.scale(blue_book, (tile_size, tile_size))
-blue_book_rect1 = blue_book.get_rect(center = (200,200))
-blue_book_rect2 = blue_book.get_rect(center = (200,200))
-blue_book_rect3 = blue_book.get_rect(center = (200,200))
-blue_book_rect4 = blue_book.get_rect(center = (200,200))
-blue_book_rect5 = blue_book.get_rect(center = (200,200))
-blue_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book1 = random.choice([blue_book_rect1,blue_book_rect2,blue_book_rect3,blue_book_rect4,blue_book_rect5,blue_book_rect6,])
-
 orange_book = pygame.image.load('Orange Image.png')
 orange_book = pygame.transform.scale(orange_book, (tile_size, tile_size))
-orange_book_rect1 = blue_book.get_rect(center = (200,200))
-orange_book_rect2 = blue_book.get_rect(center = (200,200))
-orange_book_rect3 = blue_book.get_rect(center = (200,200))
-orange_book_rect4 = blue_book.get_rect(center = (200,200))
-orange_book_rect5 = blue_book.get_rect(center = (200,200))
-orange_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book2 = random.choice([orange_book_rect1,orange_book_rect2,orange_book_rect3,orange_book_rect4,orange_book_rect5,orange_book_rect6,])
-
 green_book = pygame.image.load('Green Image.png')
 green_book = pygame.transform.scale(green_book, (tile_size, tile_size))
-green_book_rect1 = blue_book.get_rect(center = (200,200))
-green_book_rect2 = blue_book.get_rect(center = (200,200))
-green_book_rect3 = blue_book.get_rect(center = (200,200))
-green_book_rect4 = blue_book.get_rect(center = (200,200))
-green_book_rect5 = blue_book.get_rect(center = (200,200))
-green_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book3 = random.choice([green_book_rect1,green_book_rect2,green_book_rect3,green_book_rect4,green_book_rect5,green_book_rect6,])
-
 magenta_book = pygame.image.load('Magenta Book.png')
 magenta_book = pygame.transform.scale(magenta_book, (tile_size, tile_size))
-magenta_book_rect1 = blue_book.get_rect(center = (200,200))
-magenta_book_rect2 = blue_book.get_rect(center = (200,200))
-magenta_book_rect3 = blue_book.get_rect(center = (200,200))
-magenta_book_rect4 = blue_book.get_rect(center = (200,200))
-magenta_book_rect5 = blue_book.get_rect(center = (200,200))
-magenta_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book4 = random.choice([magenta_book_rect1,magenta_book_rect2,magenta_book_rect3,magenta_book_rect4,magenta_book_rect5,magenta_book_rect6,])
-
 teal_book = pygame.image.load('Teal Book.png')
 teal_book = pygame.transform.scale(teal_book, (tile_size, tile_size))
-teal_book_rect1 = blue_book.get_rect(center = (200,200))
-teal_book_rect2 = blue_book.get_rect(center = (200,200))
-teal_book_rect3 = blue_book.get_rect(center = (200,200))
-teal_book_rect4 = blue_book.get_rect(center = (200,200))
-teal_book_rect5 = blue_book.get_rect(center = (200,200))
-teal_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book5 = random.choice([teal_book_rect1,teal_book_rect2,teal_book_rect3,teal_book_rect4,teal_book_rect5,teal_book_rect6,])
-
 red_book = pygame.image.load('Red Book.png')
 red_book = pygame.transform.scale(red_book, (tile_size, tile_size))
-red_book_rect1 = blue_book.get_rect(center = (200,200))
-red_book_rect2 = blue_book.get_rect(center = (200,200))
-red_book_rect3 = blue_book.get_rect(center = (200,200))
-red_book_rect4 = blue_book.get_rect(center = (200,200))
-red_book_rect5 = blue_book.get_rect(center = (200,200))
-red_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book6 = random.choice([red_book_rect1,red_book_rect2,red_book_rect3,red_book_rect4,red_book_rect5,red_book_rect6,])
-
 purple_book = pygame.image.load('Purple Book.png')
 purple_book = pygame.transform.scale(purple_book, (tile_size, tile_size))
-purple_book_rect1 = blue_book.get_rect(center = (200,200))
-purple_book_rect2 = blue_book.get_rect(center = (200,200))
-purple_book_rect3 = blue_book.get_rect(center = (200,200))
-purple_book_rect4 = blue_book.get_rect(center = (200,200))
-purple_book_rect5 = blue_book.get_rect(center = (200,200))
-purple_book_rect6 = blue_book.get_rect(center = (200,200))
-
-random_book7 = random.choice([purple_book_rect1,purple_book_rect2,purple_book_rect3,purple_book_rect4,purple_book_rect5,purple_book_rect6,])
 
 
+def random_blue(blue_book):
+    blue_book_rect1 = blue_book.get_rect(center = (200,200))
+    blue_book_rect2 = blue_book.get_rect(center = (200,200))
+    blue_book_rect3 = blue_book.get_rect(center = (200,200))
+    blue_book_rect4 = blue_book.get_rect(center = (200,200))
+    blue_book_rect5 = blue_book.get_rect(center = (200,200))
+    blue_book_rect6 = blue_book.get_rect(center = (200,200))
+    return random.choice([blue_book_rect1,blue_book_rect2,blue_book_rect3,blue_book_rect4,blue_book_rect5,blue_book_rect6,])
+    
+def random_orange(orange_book):
+    orange_book_rect1 = orange_book.get_rect(center = (300,200))
+    orange_book_rect2 = orange_book.get_rect(center = (300,200))
+    orange_book_rect3 = orange_book.get_rect(center = (300,200))
+    orange_book_rect4 = orange_book.get_rect(center = (300,200))
+    orange_book_rect5 = orange_book.get_rect(center = (300,200))
+    orange_book_rect6 = orange_book.get_rect(center = (300,200))
+
+    return random.choice([orange_book_rect1,orange_book_rect2,orange_book_rect3,orange_book_rect4,orange_book_rect5,orange_book_rect6,])
+
+def random_green (green_book):
+    green_book_rect1 = green_book.get_rect(center = (400,200))
+    green_book_rect2 = green_book.get_rect(center = (400,200))
+    green_book_rect3 = green_book.get_rect(center = (400,200))
+    green_book_rect4 = green_book.get_rect(center = (400,200))
+    green_book_rect5 = green_book.get_rect(center = (400,200))
+    green_book_rect6 = green_book.get_rect(center = (400,200))
+    
+    return random.choice([green_book_rect1,green_book_rect2,green_book_rect3,green_book_rect4,green_book_rect5,green_book_rect6,])
+
+def random_magenta(magenta_book):
+    magenta_book_rect1 = magenta_book.get_rect(center = (500,200))
+    magenta_book_rect2 = magenta_book.get_rect(center = (500,200))
+    magenta_book_rect3 = magenta_book.get_rect(center = (500,200))
+    magenta_book_rect4 = magenta_book.get_rect(center = (500,200))
+    magenta_book_rect5 = magenta_book.get_rect(center = (500,200))
+    magenta_book_rect6 = magenta_book.get_rect(center = (500,200))
+    
+    return random.choice([magenta_book_rect1,magenta_book_rect2,magenta_book_rect3,magenta_book_rect4,magenta_book_rect5,magenta_book_rect6,])
 
 
+def random_teal(teal_book):
+    teal_book_rect1 = teal_book.get_rect(center = (600,200))
+    teal_book_rect2 = teal_book.get_rect(center = (600,200))
+    teal_book_rect3 = teal_book.get_rect(center = (600,200))
+    teal_book_rect4 = teal_book.get_rect(center = (600,200))
+    teal_book_rect5 = teal_book.get_rect(center = (600,200))
+    teal_book_rect6 = teal_book.get_rect(center = (600,200))
+    
+    return random.choice([teal_book_rect1,teal_book_rect2,teal_book_rect3,teal_book_rect4,teal_book_rect5,teal_book_rect6,])
+
+def random_red(red_book):
+    red_book_rect1 = red_book.get_rect(center = (700,200))
+    red_book_rect2 = red_book.get_rect(center = (700,200))
+    red_book_rect3 = red_book.get_rect(center = (700,200))
+    red_book_rect4 = red_book.get_rect(center = (700,200))
+    red_book_rect5 = red_book.get_rect(center = (700,200))
+    red_book_rect6 = red_book.get_rect(center = (700,200))
+    
+    return random.choice([red_book_rect1,red_book_rect2,red_book_rect3,red_book_rect4,red_book_rect5,red_book_rect6,])
+
+def random_purple(purple_book):
+    purple_book_rect1 = purple_book.get_rect(center = (800,200))
+    purple_book_rect2 = purple_book.get_rect(center = (800,200))
+    purple_book_rect3 = purple_book.get_rect(center = (800,200))
+    purple_book_rect4 = purple_book.get_rect(center = (800,200))
+    purple_book_rect5 = purple_book.get_rect(center = (800,200))
+    purple_book_rect6 = purple_book.get_rect(center = (800,200))
+    
+    return random.choice([purple_book_rect1,purple_book_rect2,purple_book_rect3,purple_book_rect4,purple_book_rect5,purple_book_rect6,])
+
+random_book1 = random_blue(blue_book)
+random_book2 = random_orange(orange_book)
+random_book3 = random_green(green_book)
+random_book4 = random_magenta(magenta_book)
+random_book5 = random_teal(teal_book)
+random_book6 = random_red(red_book)
+random_book7 = random_purple(purple_book)
 
 fontObj2=pygame.font.Font('STIXGeneralBol.ttf', 60)
-textSurfaceObj2 = fontObj2.render('Start Game', True, "Black", "Green")
+textSurfaceObj2 = fontObj2.render('Start Game', True, "Black", "White")
 textRectObj2 = textSurfaceObj2.get_rect() 
 textRectObj2.center = (600, 600)
 
@@ -169,6 +195,13 @@ def click_e():
     e_button_rect = e_button.get_rect(center = (400,400))
     screen.blit(e_button, e_button_rect)
 
+def display_score():
+    current_time = int((pygame.time.get_ticks()-start_time)/1000)
+    score_surf = fontObj1.render(str(current_time), False , "Black")
+    score_rect = score_surf.get_rect (topright = (1150,0))
+    screen.blit(score_surf, score_rect)
+    
+    return current_time
 
 def drawFlour10(ground_x, ground_y, moveSpeed):
     ground_rect.y += ground_y
@@ -295,46 +328,40 @@ def movePlayer(player_pos, ground_x, ground_y):
     return player_pos
 
 def blueBook():
-    if book_apperence:
+    if book_apperence1:
         if player_rect.colliderect(random_book1):
             click_e()
         screen.blit(blue_book, random_book1)
         
 def orangeBook():
-    if book_apperence:
-        if player_rect.colliderect(random_book2):
-            click_e()
+    if book_apperence2:
         screen.blit(orange_book, random_book2)
 
 def greenBook():
-    if book_apperence:
-        if player_rect.colliderect(random_book3):
-            click_e()
+    if book_apperence3:
         screen.blit(green_book, random_book3)
 
 def magentaBook():
-    if book_apperence:
-        if player_rect.colliderect(random_book4):
-            click_e()
+    if book_apperence4:
         screen.blit(magenta_book, random_book4)
         
 def tealBook():
-    if book_apperence:
-        if player_rect.colliderect(random_book5):
-            click_e()
+    if book_apperence5:
         screen.blit(teal_book, random_book5)
         
 def redBook():
-    if book_apperence:
-        if player_rect.colliderect(random_book6):
-            click_e()
+    if book_apperence6:
         screen.blit(red_book, random_book6)
 
 def purpleBook():
-    if book_apperence:
-        if player_rect.colliderect(random_book7):
-            click_e()
+    if book_apperence7: 
         screen.blit(purple_book, random_book7)
+        
+def showBooks(collected_books):
+    for i in range(len(collected_books)):
+        collected_books[i][1].x = i* tile_size
+        collected_books[i][1].y = 0
+        screen.blit(collected_books[i][0],collected_books[i][1])
 
 world_data = [
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -487,12 +514,9 @@ for row in world_data:
     
         col_count += 1
     row_count += 1
-
     
 
 while True:
-    
-    
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -531,18 +555,62 @@ while True:
                 ground_y=0
         
         if player_rect.colliderect(random_book1):
-            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
-                    book_apperence = False
+                    book_apperence1 = False
+                    book_apperence2 = True
+                    collected_books.append([blue_book,random_book1])
+                    
+        elif player_rect.colliderect(random_book2) and book_apperence2:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    book_apperence2 = False
+                    book_apperence3 = True
+                    collected_books.append([orange_book,random_book2])
+                    
+        elif player_rect.colliderect(random_book3) and book_apperence3:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    book_apperence3 = False
+                    book_apperence4 = True
+                    collected_books.append([green_book,random_book3])
         
-        if event.type == pygame.MOUSEBUTTONDOWN  :
+        elif player_rect.colliderect(random_book4)and book_apperence4:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    book_apperence4 = False
+                    book_apperence5 = True
+                    collected_books.append([magenta_book,random_book4])
+                    
+        elif player_rect.colliderect(random_book5)and book_apperence5:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    book_apperence5 = False
+                    book_apperence6 = True
+                    collected_books.append([teal_book,random_book5])
+        
+        elif player_rect.colliderect(random_book6)and book_apperence6:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    book_apperence6 = False
+                    book_apperence7 = True
+                    collected_books.append([red_book,random_book6])
+                    
+        elif player_rect.colliderect(random_book7)and book_apperence7:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    book_apperence7 = False
+                    game_done = True
+                    collected_books.append([purple_book,random_book7])
+                    
+        elif event.type == pygame.MOUSEBUTTONDOWN  :
             if textRectObj2.collidepoint(event.pos):
                 controlStart = True
                 introStart = False
 
     if introStart == None:
         introStart = intro()
+        start_time = pygame.time.get_ticks()
         
     elif controlStart == True:
         screen.fill("Grey")
@@ -551,10 +619,27 @@ while True:
         
         player_pos = movePlayer(player_pos, ground_x, ground_y)
         
+        
         blueBook()
+        
+        orangeBook()
+        
+        greenBook()
+        
+        magentaBook()
+        
+        tealBook()
+        
+        redBook()
+        
+        purpleBook()
+        
+        showBooks(collected_books)
+        
+        score = display_score()
     
-
-    
+    if len(collected_books)==7:
+        pygame.quit()
     #row_count = 0
     
 
