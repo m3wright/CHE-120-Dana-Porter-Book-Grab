@@ -13,6 +13,7 @@ screen = pygame.display.set_mode((1200,800))
 clock = pygame.time.Clock()
 tile_size = 90
 player_pos = 1
+book_apperence = True
 
 ground = pygame.image.load("Floor Design 10 - 6.png").convert_alpha()
 ground=pygame.transform.scale(ground, (52*tile_size,53*tile_size))
@@ -55,6 +56,14 @@ table = pygame.image.load("table.png").convert_alpha()
 
 moveSpeed = 10
 
+
+def click_e():
+    font = pygame.font.Font('my_font.ttf', 20)
+    e_button = font.render('click e to pick up', False, (0,0,0))
+    e_button_rect = e_button.get_rect(center = (400.400))
+    screen.blit(e_button, e_button_rect)
+
+
 #Random Book Generator
 blue_book = pygame.image.load('Blue Book.png')
 blue_book = pygame.transform.scale(blue_book, (tile_size, tile_size))
@@ -65,7 +74,7 @@ blue_book_rect4 = blue_book.get_rect(center = (200,200))
 blue_book_rect5 = blue_book.get_rect(center = (200,200))
 blue_book_rect6 = blue_book.get_rect(center = (200,200))
 random_book = random.choice([blue_book_rect1,blue_book_rect2,blue_book_rect3,blue_book_rect4,blue_book_rect5,blue_book_rect6,])
-
+print(random_book)
 world_data = [
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 [1, 0, 0, 0, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0, 0, 0, 0, 1],
@@ -126,6 +135,7 @@ world_data = [
 ]
 
 tile_list = []
+
 
 row_count =-19
 for row in world_data:
@@ -228,45 +238,48 @@ while True:
             pygame.quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a: 
-                moveLeft = True
+                
                 ground_x=moveSpeed
-                blue_book_x = moveSpeed
+                
             elif event.key == pygame.K_d:
-                moveRight = True
+                
                 ground_x=-moveSpeed
-                blue_book_x = -moveSpeed
+                
             elif event.key == pygame.K_w: 
-                moveUp=True
+                
                 ground_y=moveSpeed
                 blue_book_y = moveSpeed
             elif event.key == pygame.K_s: 
                 moveDown=True
                 ground_y=-moveSpeed
-                blue_book_x = -moveSpeed
+                
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a: 
-                moveLeft = True
+                
                 ground_x=0
-                blue_book_x = 0
+                
             elif event.key == pygame.K_d:
-                moveRight = True
+                
                 ground_x=0
-                blue_book_x = 0
+                
             elif event.key == pygame.K_w: 
-                moveUp=True
+                
                 ground_y=0
-                blue_book_y = 0
+                
             elif event.key == pygame.K_s: 
-                moveDown=True
                 ground_y=0
-                blue_book_y = 0
+                
     
     ground_rect.y += ground_y
     ground_rect.x += ground_x     
-    random_book.y += blue_book_y
-    random_book.x += blue_book_x    
+    random_book.y += ground_y
+    random_book.x += ground_x    
 
-          
+    
+    
+    
+        
+    
     
     
     for tile in tile_list:
@@ -281,15 +294,19 @@ while True:
             
             if ground_x < 0:
                 ground_rect.x += moveSpeed
+                random_book.x += moveSpeed
             
             elif ground_x > 0:
                 ground_rect.x -= moveSpeed
+                random_book.x -= moveSpeed
             
             if ground_y < 0:
                 ground_rect.y += moveSpeed
+                random_book.y += moveSpeed
             
             elif ground_y > 0:
                 ground_rect.y -= moveSpeed
+                random_book.y -= moveSpeed
             
             
             for tile in tile_list:
@@ -308,7 +325,7 @@ while True:
     
     
     screen.blit(ground,ground_rect)
-    screen.blit(blue_book, random_book)
+    
     
     for tile in tile_list:
         screen.blit(tile[0],tile[1])
@@ -341,7 +358,17 @@ while True:
         
         elif player_pos == 4:
             screen.blit(player_forward,player_forward_rect)
-        
+            
+            
+            
+    if player_rect.colliderect(random_book):
+        click_e()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_e:
+                book_apperence = False
+    if book_apperence: 
+        screen.blit(blue_book, random_book)
+
     
     #row_count = 0
     
