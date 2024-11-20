@@ -13,9 +13,10 @@ screen = pygame.display.set_mode((1200,800))
 clock = pygame.time.Clock()
 tile_size = 90
 player_pos = 1
-moveSpeed = 10
+moveSpeed = 15
 score = 0
 start_time = 0
+timesPlayed = 0
 
 collected_books = []
 
@@ -27,11 +28,13 @@ book_apperence5 = False
 book_apperence6 = False
 book_apperence7 = False
 
+
 game_done = False
 
-introStart = None
+introStart = True
 controlStart = None
 floor1Start = None
+startOver = False
 
 
 ground = pygame.image.load("Floor Design 10 - 6.png").convert_alpha()
@@ -174,7 +177,7 @@ textRectObj2 = textSurfaceObj2.get_rect()
 textRectObj2.center = (600, 600)
 
 fontObj1=pygame.font.Font('STIXGeneralBol.ttf', 80)
-textSurfaceObj1 = fontObj1.render('Escape Danna Porter Library', True, "Black", "White") 
+textSurfaceObj1 = fontObj1.render('Escape Dana Porter Library', True, "Black", "White") 
 textRectObj1 = textSurfaceObj1.get_rect() 
 textRectObj1.center = (600, 300)
 
@@ -190,13 +193,13 @@ def controls ():
     pass
 
 def click_e():
-    font = pygame.font.Font('STIXGeneralBol.ttf', 20)
+    font = pygame.font.Font('STIXGeneralBol.ttf', 40)
     e_button = font.render('click E to pick up', False, (0,0,0))
     e_button_rect = e_button.get_rect(center = (400,400))
     screen.blit(e_button, e_button_rect)
 
 def display_score():
-    current_time = int((pygame.time.get_ticks()-start_time)/1000)
+    current_time = round((pygame.time.get_ticks()-start_time)/1000,1)
     score_surf = fontObj1.render(str(current_time), False , "Black")
     score_rect = score_surf.get_rect (topright = (1150,0))
     screen.blit(score_surf, score_rect)
@@ -329,9 +332,9 @@ def movePlayer(player_pos, ground_x, ground_y):
 
 def blueBook():
     if book_apperence1:
-        if player_rect.colliderect(random_book1):
-            click_e()
         screen.blit(blue_book, random_book1)
+        if player_rect.colliderect(random_book1) and timesPlayed == 0:
+            click_e()
         
 def orangeBook():
     if book_apperence2:
@@ -425,96 +428,128 @@ world_data = [
 tile_list = []
 
 
-row_count =-19
-for row in world_data:
-    col_count = -7 
-    for tile in row:
-        if tile == 1:
-            img = pygame.transform.scale(table_img, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        elif tile == 2:
-            img = pygame.transform.scale(br, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-            
-        elif tile == 3:
-            img = pygame.transform.scale(bl, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        
-        elif tile == 4:
-            img = pygame.transform.scale(bu, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
+ 
+def init_map():
+    row_count =-19
+    for row in world_data:
+        col_count = -7 
+        for tile in row:
+            if tile == 1:
+                img = pygame.transform.scale(table_img, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+            elif tile == 2:
+                img = pygame.transform.scale(br, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
                 
-        elif tile == 5:
-            img = pygame.transform.scale(bd, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
+            elif tile == 3:
+                img = pygame.transform.scale(bl, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
             
-        elif tile == 6:
-            img = pygame.transform.scale(bv, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        
-        elif tile == 7:
-            img = pygame.transform.scale(bh, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
+            elif tile == 4:
+                img = pygame.transform.scale(bu, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+                    
+            elif tile == 5:
+                img = pygame.transform.scale(bd, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+                
+            elif tile == 6:
+                img = pygame.transform.scale(bv, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
             
-        elif tile == 8:
-            img = pygame.transform.scale(chair, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        
-        elif tile == 9:
-            img = pygame.transform.scale(chair_up, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        
-        elif tile == 10:
-            img = pygame.transform.scale(chair_left, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        
-        elif tile == 11:
-            img = pygame.transform.scale(chair_right, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
-        
-        elif tile == 12:
-            img = pygame.transform.scale(owall, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
+            elif tile == 7:
+                img = pygame.transform.scale(bh, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+                
+            elif tile == 8:
+                img = pygame.transform.scale(chair, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
             
-        elif tile == 13:
-            img = pygame.transform.scale(iwall, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
+            elif tile == 9:
+                img = pygame.transform.scale(chair_up, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+            
+            elif tile == 10:
+                img = pygame.transform.scale(chair_left, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+            
+            elif tile == 11:
+                img = pygame.transform.scale(chair_right, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+            
+            elif tile == 12:
+                img = pygame.transform.scale(owall, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+                
+            elif tile == 13:
+                img = pygame.transform.scale(iwall, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
+            
+            elif tile == 14:
+                img = pygame.transform.scale(table, (tile_size, tile_size))
+                img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
+                tile = (img, img_rect)
+                tile_list.append(tile)
         
-        elif tile == 14:
-            img = pygame.transform.scale(table, (tile_size, tile_size))
-            img_rect = img.get_rect(topright = (col_count*tile_size,row_count*tile_size))
-            tile = (img, img_rect)
-            tile_list.append(tile)
+            col_count += 1
+        row_count += 1
+    row_count = 0
+    col_count = 0
+
+textSurfaceObj3 = fontObj1.render('You Won!', True, "Black", "White") 
+textRectObj3 = textSurfaceObj3.get_rect() 
+textRectObj3.center = (600, 150)
+
+textSurfaceObj4 = fontObj1.render('Would You Like to Play Again?', True, "Black", "White") 
+textRectObj4 = textSurfaceObj4.get_rect() 
+textRectObj4.center = (600, 300)
+
+textSurfaceObj5 = fontObj1.render('Yes', True, "Black", "White") 
+textRectObj5 = textSurfaceObj5.get_rect() 
+textRectObj5.center = (300, 600)
+
+textSurfaceObj6 = fontObj1.render('No', True, "Black", "White") 
+textRectObj6 = textSurfaceObj6.get_rect() 
+textRectObj6.center = (900, 600)
+
+
+
+
+def game_won():
+    screen.fill('White')
+    screen.blit(textSurfaceObj3,textRectObj3)
+    screen.blit(textSurfaceObj4,textRectObj4)
+    screen.blit(textSurfaceObj5,textRectObj5)
+    screen.blit(textSurfaceObj6,textRectObj6)
     
-        col_count += 1
-    row_count += 1
-    
+
+init_map()
 
 while True:
     
@@ -603,16 +638,26 @@ while True:
                     game_done = True
                     collected_books.append([purple_book,random_book7])
                     
-        elif event.type == pygame.MOUSEBUTTONDOWN  :
+        if event.type == pygame.MOUSEBUTTONDOWN  :
             if textRectObj2.collidepoint(event.pos):
                 controlStart = True
                 introStart = False
+                start_time = pygame.time.get_ticks()
+            elif textRectObj5.collidepoint(event.pos):
+                startOver = True
+                
+            elif textRectObj6.collidepoint(event.pos):
+                pygame.quit() 
+            
 
-    if introStart == None:
+    if introStart:
         introStart = intro()
-        start_time = pygame.time.get_ticks()
         
-    elif controlStart == True:
+    
+    
+        
+    elif controlStart:
+        
         screen.fill("Grey")
         
         drawFlour10(ground_x, ground_y, moveSpeed)
@@ -639,7 +684,41 @@ while True:
         score = display_score()
     
     if len(collected_books)==7:
-        pygame.quit()
+        controlStart=False
+        game_won()
+        score_message = fontObj1.render(f'your score: {score}',False,"Green")
+        score_message_rect = score_message.get_rect(center = (600,450)) 
+        screen.blit(score_message,score_message_rect)
+        
+        if startOver:
+            timesPlayed +=1
+            start_time = pygame.time.get_ticks()
+            ground_rect.x = -7*tile_size
+            ground_rect.y = -18*tile_size
+            tile_list.clear()
+            init_map()
+            controlStart = True
+            book_apperence1 = True
+            book_apperence2 = False
+            book_apperence3 = False
+            book_apperence4 = False
+            book_apperence5 = False
+            book_apperence6 = False
+            book_apperence7 = False
+            score = 0
+            collected_books.clear()
+            random_book1 = random_blue(blue_book)
+            random_book2 = random_orange(orange_book)
+            random_book3 = random_green(green_book)
+            random_book4 = random_magenta(magenta_book)
+            random_book5 = random_teal(teal_book)
+            random_book6 = random_red(red_book)
+            random_book7 = random_purple(purple_book)
+            startOver = False
+            
+            
+           
+        
     #row_count = 0
     
 
