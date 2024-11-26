@@ -32,7 +32,6 @@ book_apperence6 = False
 book_apperence7 = False
 
 #MW game state variables
-game_done = False
 introStart = True
 controlStart = None
 floor1Start = None
@@ -718,7 +717,7 @@ while True:
                 if event.key == pygame.K_e:
                     pickUpSound.play() 
                     book_apperence7 = False
-                    game_done = True
+                    
                     collected_books.append([purple_book,random_book7])
         #MW checks if the user pressed the screen            
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -733,65 +732,63 @@ while True:
                 startOver = True
             #MW check if the pressed the no button when asked if they want to restart the game    
             elif textRectObj6.collidepoint(event.pos):
+                #MW quits the game
                 pygame.quit() 
-            
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if Obj4_text_rect.collidepoint(event.pos):
+            #MS 
+            elif Obj4_text_rect.collidepoint(event.pos):
                 controlStart = True
                 how_to_play_start = False
                 start_time = pygame.time.get_ticks()
-                
+    #MW checks a boolean variable for wether or not the intro should be blit onto the screen            
     if introStart:
-        introStart = intro()
-        
-    elif how_to_play_start == True:
-        how_to_play_start == how_to_play()
-    
-    
-        
+        #calls the intro function and 
+        intro()
+    #MW checks if a boolean variable for wether or not the how to play portion of the game shhould be blit onto the screen    
+    elif how_to_play_start:
+        #calls the how to play function
+        how_to_play()
+    #MW checks a boolean varaible for wether or not the the main portion of the game should be initiated
     elif controlStart:
-        
+        #MW fills the screen a base layer grey
         screen.fill("Grey")
-        
+        #MW calls upon all the necessary function for the game to run
         drawFlour10(ground_x, ground_y, moveSpeed)
-        
         player_pos = movePlayer(player_pos, ground_x, ground_y)
-        
         blueBook()
-        
         orangeBook()
-        
         greenBook()
-        
         magentaBook()
-        
         tealBook()
-        
         redBook()
-        
         purpleBook()
-        
+        #MW shows all the book you collected at the top left corner of your screen
         showBooks(collected_books)
-        
+        #MW gets the score value
         score = display_score()
-        
-    elif how_to_play_start == True:
-        how_to_play_start == how_to_play()
     
+    #MW checks if all the books were collected
     if len(collected_books)==7:
+        #MW stop the game functions from running
         controlStart=False
+        #MW gets the outro screen and asks the user if they want to play again
         game_won()
+        #MW blits how long it took you to collect all the books
         score_message = fontObj1.render(f'your score: {score}',False,"Green")
         score_message_rect = score_message.get_rect(center = (600,450)) 
         screen.blit(score_message,score_message_rect)
-        
+        #MW reinitializes all the varaibles so that the game can start again at the exact same state
         if startOver:
+            #MW makes it so the user isnt prompted with press e too pick a book in their second playthrough
             timesPlayed +=1
+            #MW gets new start time 
             start_time = pygame.time.get_ticks()
             ground_rect.x = -7*tile_size
             ground_rect.y = -18*tile_size
+            #MW clears the tile list as their coordinates were all moved around by the player
             tile_list.clear()
+            #MW recreates the map
             init_map()
+            #resets book apperance so that the first book is once again the only book on the map
             controlStart = True
             book_apperence1 = True
             book_apperence2 = False
@@ -801,7 +798,9 @@ while True:
             book_apperence6 = False
             book_apperence7 = False
             score = 0
+            #MW resets all the books you collected
             collected_books.clear()
+            #MW regets all of the random books
             random_book1 = random_blue(blue_book)
             random_book2 = random_orange(orange_book)
             random_book3 = random_green(green_book)
@@ -811,15 +810,7 @@ while True:
             random_book7 = random_purple(purple_book)
             startOver = False
             
-            
-
-           
-        
-    #row_count = 0
-    
-
-    #ground_y=0
-    #ground_x=0
-    
+    #MW updates the screen        
     pygame.display.update()
+    #MW sets tick count to 60
     clock.tick(60)
