@@ -4,7 +4,7 @@ from pygame import *
 from sys import exit
 from random import randint
 import random
-
+            
 #MW defines all the variables
 ground_y=0
 ground_x=0
@@ -44,7 +44,7 @@ pygame.display.set_caption("Dana Porter Book Grab")
 
 #MW imports all of the images and image rectangles for the game
 #MW floor desiggn for the game
-ground = pygame.image.load("Floor Design 10 - 6.png").convert_alpha()
+ground = pygame.image.load("Floor Design.png").convert_alpha()
 ground=pygame.transform.scale(ground, (52*tile_size,53*tile_size))
 ground_rect = ground.get_rect(topleft = (-7*tile_size,-18*tile_size))
 #MW bookshelf tile images
@@ -206,7 +206,28 @@ Obj7_font = pygame.font.Font('my_font.ttf', 40)
 Obj7_text_surface = Obj7_font.render(instruction3, True, 'Black', 'Grey')
 Obj7_text_rect = Obj7_text_surface.get_rect(center = (600,500))
 
-#
+textSurfaceObj3 = fontObj1.render('You Won!', True, "Black", "White") 
+textRectObj3 = textSurfaceObj3.get_rect() 
+textRectObj3.center = (600, 150)
+
+textSurfaceObj4 = fontObj1.render('Would You Like to Play Again?', True, "Black", "White") 
+textRectObj4 = textSurfaceObj4.get_rect() 
+textRectObj4.center = (600, 300)
+
+textSurfaceObj5 = fontObj1.render('Yes', True, "Black", "White") 
+textRectObj5 = textSurfaceObj5.get_rect() 
+textRectObj5.center = (300, 600)
+
+textSurfaceObj6 = fontObj1.render('No', True, "Black", "White") 
+textRectObj6 = textSurfaceObj6.get_rect() 
+textRectObj6.center = (900, 600)
+
+#initializes all the game sound effects and the game music
+pickUpSound = pygame.mixer.Sound('item-equip-6904.mp3') 
+pygame.mixer.music.load('Distant-Sky-Epic-Hybrid-Music-chosic.com_.mp3')
+#plays the game music in a infinite loop
+pygame.mixer.music.play(-1, 0.0)
+
 
 
 #MW function that blits the intro screen
@@ -427,7 +448,6 @@ def showBooks(collected_books):
         collected_books[i][1].y = 0
         screen.blit(collected_books[i][0],collected_books[i][1])
 
-#
 world_data = [
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 [1, 0, 0, 0, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0,10,14,14,11, 0, 0, 0, 0, 1],
@@ -591,105 +611,84 @@ def init_map():
     #MW resets the column and row count
     row_count = 0
     col_count = 0
+    
+init_map()
 
-textSurfaceObj3 = fontObj1.render('You Won!', True, "Black", "White") 
-textRectObj3 = textSurfaceObj3.get_rect() 
-textRectObj3.center = (600, 150)
-
-textSurfaceObj4 = fontObj1.render('Would You Like to Play Again?', True, "Black", "White") 
-textRectObj4 = textSurfaceObj4.get_rect() 
-textRectObj4.center = (600, 300)
-
-textSurfaceObj5 = fontObj1.render('Yes', True, "Black", "White") 
-textRectObj5 = textSurfaceObj5.get_rect() 
-textRectObj5.center = (300, 600)
-
-textSurfaceObj6 = fontObj1.render('No', True, "Black", "White") 
-textRectObj6 = textSurfaceObj6.get_rect() 
-textRectObj6.center = (900, 600)
-
-
-
-
+#MW blits the screen for when the user hhas collected all of ther required books
 def game_won():
     screen.fill('White')
     screen.blit(textSurfaceObj3,textRectObj3)
     screen.blit(textSurfaceObj4,textRectObj4)
     screen.blit(textSurfaceObj5,textRectObj5)
     screen.blit(textSurfaceObj6,textRectObj6)
-    
 
-init_map()
-
-walkSound = pygame.mixer.Sound('mixkit-footsteps-on-heels-on-the-pavement-542.wav') 
-pickUpSound = pygame.mixer.Sound('item-equip-6904.mp3') 
-
-pygame.mixer.music.load('Distant-Sky-Epic-Hybrid-Music-chosic.com_.mp3')
-pygame.mixer.music.play(-1, 0.0)
-
+#MW while True game loop
 while True:
-    
+    #MW for loop that checks events that occur on the display
     for event in pygame.event.get():
+        #MW if the x button at the top of the screen is pressed then the game ends
         if event.type == pygame.QUIT:
             pygame.quit()
+        #MW if a button is pressed
         if event.type == pygame.KEYDOWN:
+            #MW if the a button is pressed then the x portion of movement is set to the movespeed
             if event.key == pygame.K_a: 
-                
                 ground_x=moveSpeed
-                
+            #MW if the d button is pressed then the x portion of movement is set to the negative movespeed    
             elif event.key == pygame.K_d:
-                
                 ground_x=-moveSpeed
-                
+            #MW if the w button is pressed then the y portion of movement is set to the movespeed    
             elif event.key == pygame.K_w: 
-                
                 ground_y=moveSpeed
-                blue_book_y = moveSpeed
+            #MW if the s button is pressed then the y portion of movement is set to the negative movespeed      
             elif event.key == pygame.K_s: 
-                moveDown=True
                 ground_y=-moveSpeed
-                
+        #MW if a button that was pressed is no longer pressed        
         if event.type == pygame.KEYUP:
+            #MW sets the x and y components of movement to zero so the player stop moving if the key that was unpressed was w, a, s, or d
             if event.key == pygame.K_a:
-                
                 ground_x=0
                 
             elif event.key == pygame.K_d:
-                
                 ground_x=0
                 
             elif event.key == pygame.K_w: 
-                
                 ground_y=0
                 
             elif event.key == pygame.K_s: 
                 ground_y=0
         
-                
+        #MW checks if the player has collided with the first book        
         if player_rect.colliderect(random_book1):
-            pickUpSound.play() 
+            #MW checks if a key is being pressed
             if event.type == pygame.KEYDOWN:
+                #MW checks if the key that was pressed was e
                 if event.key == pygame.K_e:
+                    #MW plays sound to signify pickup
+                    pickUpSound.play() 
+                    #MW stops book one from being blit
                     book_apperence1 = False
+                    #MW activates book two to be blit
                     book_apperence2 = True
+                    #MW adds book ones image and rectangle to a list that contains the collected books
                     collected_books.append([blue_book,random_book1])
-                    
+        #MW checks if the player has collided with the second book and that book one was collected            
         elif player_rect.colliderect(random_book2) and book_apperence2:
-            pickUpSound.play() 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
+                    pickUpSound.play() 
                     book_apperence2 = False
                     book_apperence3 = True
                     collected_books.append([orange_book,random_book2])
-                    
+        #MW checks if the player has collided with the third book and that book two was collected    
         elif player_rect.colliderect(random_book3) and book_apperence3:
-            pickUpSound.play() 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
+                    pickUpSound.play() 
                     book_apperence3 = False
                     book_apperence4 = True
                     collected_books.append([green_book,random_book3])
-        
+        #MW checks if the player has collided with the fourth book and that book three was collected      
         elif player_rect.colliderect(random_book4)and book_apperence4:
             pickUpSound.play() 
             if event.type == pygame.KEYDOWN:
@@ -697,15 +696,15 @@ while True:
                     book_apperence4 = False
                     book_apperence5 = True
                     collected_books.append([magenta_book,random_book4])
-                    
+        #MW checks if the player has collided with the fifth book and that book four was collected              
         elif player_rect.colliderect(random_book5)and book_apperence5:
-            pickUpSound.play() 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
+                    pickUpSound.play() 
                     book_apperence5 = False
                     book_apperence6 = True
                     collected_books.append([teal_book,random_book5])
-        
+        #checks if the player has collided with the sixth book and that book five was collected  
         elif player_rect.colliderect(random_book6)and book_apperence6:
             pickUpSound.play() 
             if event.type == pygame.KEYDOWN:
@@ -713,23 +712,26 @@ while True:
                     book_apperence6 = False
                     book_apperence7 = True
                     collected_books.append([red_book,random_book6])
-                    
+        #MW checks if the player has collided with the seventh book and that book six was collected              
         elif player_rect.colliderect(random_book7)and book_apperence7:
-            pickUpSound.play() 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_e:
+                    pickUpSound.play() 
                     book_apperence7 = False
                     game_done = True
                     collected_books.append([purple_book,random_book7])
-                    
-        if event.type == pygame.MOUSEBUTTONDOWN  :
+        #MW checks if the user pressed the screen            
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            #MW checks if the user pressed the start button in thhe intro
             if textRectObj2.collidepoint(event.pos):
+                #MW allows the how to play section of the game to start and the intro section to end
                 how_to_play_start = True
                 introStart = False
-                
+            #MW checks if the user pressed thhe play again button    
             elif textRectObj5.collidepoint(event.pos):
+                #starts the game over
                 startOver = True
-                
+            #MW check if the pressed the no button when asked if they want to restart the game    
             elif textRectObj6.collidepoint(event.pos):
                 pygame.quit() 
             
