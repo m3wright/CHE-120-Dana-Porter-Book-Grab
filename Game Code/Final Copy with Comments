@@ -186,14 +186,14 @@ textRectObj2 = textSurfaceObj2.get_rect()
 textRectObj2.center = (600, 600)
 
 fontObj1=pygame.font.Font('my_font.ttf', 80)
-textSurfaceObj1 = fontObj1.render('Dana Porter Book Grab', True, "Black", "Grey") 
+textSurfaceObj1 = fontObj1.render('Dana Porter Book Grab', True, "Black", "White") 
 textRectObj1 = textSurfaceObj1.get_rect() 
 textRectObj1.center = (600, 300)
 
 #MS - These are the fonts and messages for the how to play screen.
 #These fonts are converted to rectangles so they can be placed acurately on the screen.
 Obj3_font = pygame.font.Font('my_font.ttf', 40)
-Obj3_text_surface = Obj3_font.render('How to Play', True, 'Black', 'Grey')
+Obj3_text_surface = Obj3_font.render('How to Play', True, 'Black', 'White')
 Obj3_text_rect = Obj3_text_surface.get_rect(center = (600,100))
 
 Obj4_font = pygame.font.Font('my_font.ttf', 40)
@@ -244,7 +244,7 @@ pygame.mixer.music.play(-1, 0.0)
 #MW function that blits the intro screen
 def intro ():
     #MW fills screen and blits two text objects
-    screen.fill('Gray')
+    screen.fill('White')
     screen.blit(textSurfaceObj1, textRectObj1) 
     screen.blit(textSurfaceObj2, textRectObj2) 
 
@@ -420,45 +420,33 @@ def movePlayer(player_pos, ground_x, ground_y):
 def blueBook():
     if book_apperence1:
         screen.blit(blue_book, random_book1)
-        if player_rect.colliderect(random_book1):
+        if player_rect.colliderect(random_book1) and timesPlayed == 0:
             click_e()
-#These functions also determine if the player is colliding with the book, if so, the click e function is called. 
+#This above function also tells the player to click e to pick the book up. This only occurs if the player has played once. 
 
 def orangeBook():
     if book_apperence2:
         screen.blit(orange_book, random_book2)
-        if player_rect.colliderect(random_book2):
-            click_e()
 
 def greenBook():
     if book_apperence3:
         screen.blit(green_book, random_book3)
-        if player_rect.colliderect(random_book3):
-            click_e()
 
 def magentaBook():
     if book_apperence4:
         screen.blit(magenta_book, random_book4)
-        if player_rect.colliderect(random_book4):
-            click_e()
 
 def tealBook():
     if book_apperence5:
         screen.blit(teal_book, random_book5)
-        if player_rect.colliderect(random_book5):
-            click_e()
         
 def redBook():
     if book_apperence6:
         screen.blit(red_book, random_book6)
-        if player_rect.colliderect(random_book6):
-            click_e()
 
 def purpleBook():
     if book_apperence7: 
         screen.blit(purple_book, random_book7)
-        if player_rect.colliderect(random_book7):
-            click_e()
 
 
 #MS - This function blits the collected books in the top of the screen.
