@@ -1,5 +1,11 @@
+#Department of Chemical Engineering, Faculty of Engineering
+#University of Waterloo
+#December 2, 2024 
+
 #MW = Marcus Wright
+#21143596
 #MS = Michael Small
+#21144558
 
 #MW: Imports all the necessary modules
 import pygame , sys
