@@ -1,7 +1,7 @@
 This project is for our CHE 120 Univeristy of Waterloo computer literacy and coding class
 This is a game created using python and pygame
 
-Citationsbr /
+Citations<br />
 Clear Code. (2021, July 1). The Ultimate Introduction to Pygame. YouTube. https://www.youtube.com/watch?v=AY9MnQ4x3zk 
 
 Distant Sky by Keys of Moon | https://soundcloud.com/keysofmoon
