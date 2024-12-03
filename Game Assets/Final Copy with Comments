@@ -3,9 +3,9 @@
 #December 2, 2024 
 
 #MW = Marcus Wright
-#21143596
+#Student ID: 21143596
 #MS = Michael Small
-#21144558
+#Student ID: 21144558
 
 #MW: Imports all the necessary modules
 import pygame , sys
@@ -199,7 +199,7 @@ textRectObj1.center = (600, 300)
 #MS - These are the fonts and messages for the how to play screen.
 #These fonts are converted to rectangles so they can be placed acurately on the screen.
 Obj3_font = pygame.font.Font('my_font.ttf', 40)
-Obj3_text_surface = Obj3_font.render('How to Play', True, 'Black', 'White')
+Obj3_text_surface = Obj3_font.render('How to Play', True, 'Black', 'Grey')
 Obj3_text_rect = Obj3_text_surface.get_rect(center = (600,100))
 
 Obj4_font = pygame.font.Font('my_font.ttf', 40)
@@ -256,7 +256,7 @@ def intro ():
 
 #MS - This is the function that blits all the how to play fonts and messages onto the screen.
 def how_to_play():
-    screen.fill('Gray')
+    screen.fill('Grey')
     screen.blit(Obj3_text_surface, Obj3_text_rect)
     screen.blit(Obj4_text_surface, Obj4_text_rect)
     screen.blit(Obj5_text_surface, Obj5_text_rect) 
