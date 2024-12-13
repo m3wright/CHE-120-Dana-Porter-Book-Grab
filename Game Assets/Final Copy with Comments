@@ -3,9 +3,7 @@
 #December 2, 2024 
 
 #MW = Marcus Wright
-#Student ID: 21143596
 #MS = Michael Small
-#Student ID: 21144558
 
 #MW: Imports all the necessary modules
 import pygame , sys
